@@ -1,0 +1,46 @@
+.face-page {
+  .g-face-btn {
+    width: 100%;
+    height: .8rem;
+    background-color: #3c78e5;
+    font-size: .3rem;
+    color: #fff;
+    text-align: center;
+    line-height: .8rem;
+    border-radius: .4rem;
+  }
+
+  .g-face-border-btn {
+    background-color: transparent;
+    border: .01rem solid #6199FF;
+    color: #6199FF;
+  }
+
+  .g-example-dialog {
+    .g-example {
+      text-align: center;
+
+      img {
+        @include wh(6.2rem, 9.08rem);
+        margin-bottom: .56rem;
+      }
+
+      i {
+        display: inline-block;
+        @include sc(.56rem, $fc);
+        padding: .1rem;
+      }
+    }
+  }
+
+  .layer {
+    position: absolute;
+    width: 100%;
+    padding: .3rem .52rem;
+    bottom: .52rem;
+  }
+}
+
+.g-font-danger {
+  color: #ff4a4a;
+}
