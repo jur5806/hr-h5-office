@@ -84,6 +84,8 @@ const state = {
   pointId:'',//点位id
   objectName:'',//点位名称
   isNumber:true,//是不是纯数字
+
+  isShare:false,
 }
 
 export default new Vuex.Store({

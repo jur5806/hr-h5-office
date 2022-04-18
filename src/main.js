@@ -149,91 +149,92 @@ router.beforeEach((to, from, next) => {
     let url = localStorage.getItem(item)
     url && (store.state[item] = url)
   })
-  getData.getChannelByUrl(url).then(res => {
-    let channelInfo = res.data.data.channel
-    store.state.webTitle = channelInfo.channelName
-    store.state.channelId = channelInfo.channelId
-    store.state.channelName = channelInfo.channelName
-    store.state.channelAppLogoUrl = channelInfo.channelAppLogoUrl
-    store.state.companyApiUrl = channelInfo.channelCompanyApiUrl
-    store.state.channelApiUrl = channelInfo.channelApiUrl
-    store.state.channelMortarApiUrl = channelInfo.channelMortarApiUrl
-    store.state.channelIncubationUrl = channelInfo.channelIncubationUrl
-    store.state.channelArchivesApiUrl = channelInfo.channelArchivesApiUrl
-    store.state.channelChannelApiUrl = channelInfo.channelChannelApiUrl
-    store.state.channelMediaFrontUrl = channelInfo.channelMediaFrontUrl.substring(0,channelInfo.channelMediaFrontUrl.length-1)
-    store.state.userPhone = userPhone
+  next()
+  // getData.getChannelByUrl(url).then(res => {
+  //   let channelInfo = res.data.data.channel
+  //   store.state.webTitle = channelInfo.channelName
+  //   store.state.channelId = channelInfo.channelId
+  //   store.state.channelName = channelInfo.channelName
+  //   store.state.channelAppLogoUrl = channelInfo.channelAppLogoUrl
+  //   store.state.companyApiUrl = channelInfo.channelCompanyApiUrl
+  //   store.state.channelApiUrl = channelInfo.channelApiUrl
+  //   store.state.channelMortarApiUrl = channelInfo.channelMortarApiUrl
+  //   store.state.channelIncubationUrl = channelInfo.channelIncubationUrl
+  //   store.state.channelArchivesApiUrl = channelInfo.channelArchivesApiUrl
+  //   store.state.channelChannelApiUrl = channelInfo.channelChannelApiUrl
+  //   store.state.channelMediaFrontUrl = channelInfo.channelMediaFrontUrl.substring(0,channelInfo.channelMediaFrontUrl.length-1)
+  //   store.state.userPhone = userPhone
 
-    // cookie存储
-    mobile.setCookie('channelId', channelId, '', cookieDomain)
-    // mobile.setCookie('parkToken', parkToken, '', cookieDomain)
-    // mobile.setCookie('userPhone', userPhone, '', cookieDomain)
-    //session存储
-    mobile.setSession('channelId', channelId, '', cookieDomain)
-    // mobile.setSession('parkToken', parkToken, '', cookieDomain)
-    mobile.setSession('userPhone', userPhone, '', cookieDomain)
-    mobile.setSession('channelMediaFrontUrl', channelInfo.channelMediaFrontUrl.substring(0,channelInfo.channelMediaFrontUrl.length-1), '', cookieDomain)
-    mobile.setSession('channelMortarApiUrl', channelInfo.channelMortarApiUrl, '', cookieDomain)
-    mobile.setSession('channelCompanyApiUrl', channelInfo.channelCompanyApiUrl, '', cookieDomain)
-    mobile.setSession('channelIncubationUrl', channelInfo.channelIncubationUrl, '', cookieDomain)
+  //   // cookie存储
+  //   mobile.setCookie('channelId', channelId, '', cookieDomain)
+  //   // mobile.setCookie('parkToken', parkToken, '', cookieDomain)
+  //   // mobile.setCookie('userPhone', userPhone, '', cookieDomain)
+  //   //session存储
+  //   mobile.setSession('channelId', channelId, '', cookieDomain)
+  //   // mobile.setSession('parkToken', parkToken, '', cookieDomain)
+  //   mobile.setSession('userPhone', userPhone, '', cookieDomain)
+  //   mobile.setSession('channelMediaFrontUrl', channelInfo.channelMediaFrontUrl.substring(0,channelInfo.channelMediaFrontUrl.length-1), '', cookieDomain)
+  //   mobile.setSession('channelMortarApiUrl', channelInfo.channelMortarApiUrl, '', cookieDomain)
+  //   mobile.setSession('channelCompanyApiUrl', channelInfo.channelCompanyApiUrl, '', cookieDomain)
+  //   mobile.setSession('channelIncubationUrl', channelInfo.channelIncubationUrl, '', cookieDomain)
 
-    document.querySelector('title').innerHTML = store.state.webTitle
-    if (mobile.getStore('parkToken')) {
-      mobile.setCookie('userToken', mobile.getStore('parkToken'), '', cookieDomain)
-      mobile.setCookie('userMobile', mobile.getStore('userPhone'), '', cookieDomain)
-    } else if (mobile.getCookie('parkToken')) {
-      mobile.setStore('parkToken', mobile.getCookie('parkToken'))
-      mobile.setStore('userPhone', mobile.getCookie('userPhone'))
-      mobile.setCookie('userToken', mobile.getCookie('parkToken'), '', cookieDomain)
-      mobile.setCookie('userMobile', mobile.getCookie('userPhone'), '', cookieDomain)
-    }
+  //   document.querySelector('title').innerHTML = store.state.webTitle
+  //   if (mobile.getStore('parkToken')) {
+  //     mobile.setCookie('userToken', mobile.getStore('parkToken'), '', cookieDomain)
+  //     mobile.setCookie('userMobile', mobile.getStore('userPhone'), '', cookieDomain)
+  //   } else if (mobile.getCookie('parkToken')) {
+  //     mobile.setStore('parkToken', mobile.getCookie('parkToken'))
+  //     mobile.setStore('userPhone', mobile.getCookie('userPhone'))
+  //     mobile.setCookie('userToken', mobile.getCookie('parkToken'), '', cookieDomain)
+  //     mobile.setCookie('userMobile', mobile.getCookie('userPhone'), '', cookieDomain)
+  //   }
 
-    let parkToken = store.state.parkToken || mobile.getStore('parkToken')
+  //   let parkToken = store.state.parkToken || mobile.getStore('parkToken')
 
-    if (to.name !== 'login' && parkToken) {
-      /* getData.getUserDetail().then(res => {
-       let user = res.data.data.user;
-       mobile.setStore('userConfirmState', user.userConfirmState)
-       }) */
-    }
+  //   if (to.name !== 'login' && parkToken) {
+  //     /* getData.getUserDetail().then(res => {
+  //      let user = res.data.data.user;
+  //      mobile.setStore('userConfirmState', user.userConfirmState)
+  //      }) */
+  //   }
 
-    if (window.screen.height === 812 && window.screen.width === 375) {
-      store.state.h5phoneType = 1
-    }
-    if (to.query.platform) {
-      store.state.platform = to.query.platform
-      store.state.phoneType = to.query.phoneType
-      store.state.userPhone = to.query.userPhone
-      store.state.parkToken = to.query.parkToken
-      store.state.channelId = to.query.channelId
-      document.title = to.name
-    } else if (to.query.parkToken) {
-      store.state.parkToken = to.query.parkToken
-    } else if (mobile.getStore('parkToken')) {
-      store.state.parkToken = mobile.getStore('parkToken')
-    }
-    // if (to.matched.some(record => record.meta.keepLogin)) {
-    //   if (!store.state.parkToken && !mobile.getStore('parkToken')) {
-    //     if (Number(to.query.shareNum) === 1) {
-    //       mobile.setSession('paths', to.path)
-    //       mobile.setSession('tempQuery', to.query)
-    //     }
-    //     router.replace('/login')
-    //     mobile.removeStore('parkToken')
-    //     store.state.parkToken = ''
-    //     return false
-    //   }
-    // }
-    if (store.state.platform) {
-      document.title = to.name
-      if (to.path === '/additionalServices') {
-        document.title = '新增' + to.query.orderTypeName
-      }
-    }
-    next()
-  }).catch(error => {
-    next()
-  })
+  //   if (window.screen.height === 812 && window.screen.width === 375) {
+  //     store.state.h5phoneType = 1
+  //   }
+  //   if (to.query.platform) {
+  //     store.state.platform = to.query.platform
+  //     store.state.phoneType = to.query.phoneType
+  //     store.state.userPhone = to.query.userPhone
+  //     store.state.parkToken = to.query.parkToken
+  //     store.state.channelId = to.query.channelId
+  //     document.title = to.name
+  //   } else if (to.query.parkToken) {
+  //     store.state.parkToken = to.query.parkToken
+  //   } else if (mobile.getStore('parkToken')) {
+  //     store.state.parkToken = mobile.getStore('parkToken')
+  //   }
+  //   // if (to.matched.some(record => record.meta.keepLogin)) {
+  //   //   if (!store.state.parkToken && !mobile.getStore('parkToken')) {
+  //   //     if (Number(to.query.shareNum) === 1) {
+  //   //       mobile.setSession('paths', to.path)
+  //   //       mobile.setSession('tempQuery', to.query)
+  //   //     }
+  //   //     router.replace('/login')
+  //   //     mobile.removeStore('parkToken')
+  //   //     store.state.parkToken = ''
+  //   //     return false
+  //   //   }
+  //   // }
+  //   if (store.state.platform) {
+  //     document.title = to.name
+  //     if (to.path === '/additionalServices') {
+  //       document.title = '新增' + to.query.orderTypeName
+  //     }
+  //   }
+  //   next()
+  // }).catch(error => {
+  //   next()
+  // })
 })
 router.afterEach((to, from, next) => {
   let getfirst = sessionStorage.getItem('first')

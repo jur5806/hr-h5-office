@@ -34,31 +34,31 @@ const pageSize = 10
 let domain = mobile.getSession('domain')
 
 // 添加一个响应拦截器
-axios.interceptors.response.use(function (res) {
-  if (res.data.code == 2) {
-    localStorage.setItem('fullPath', router.history.current.fullPath)
-    router.replace({ path: '/login' })
-    mobile.removeStore('parkToken')
-    mobile.removeCookie('parkToken')
-    store.state.parkToken = ''
-    mobile.removeCookie('userToken', domain)
-    mobile.removeCookie('userMobile', domain)
-    store.state.userPhone = ''
+// axios.interceptors.response.use(function (res) {
+//   if (res.data.code == 2) {
+//     localStorage.setItem('fullPath', router.history.current.fullPath)
+//     router.replace({ path: '/login' })
+//     mobile.removeStore('parkToken')
+//     mobile.removeCookie('parkToken')
+//     store.state.parkToken = ''
+//     mobile.removeCookie('userToken', domain)
+//     mobile.removeCookie('userMobile', domain)
+//     store.state.userPhone = ''
 
-    return res
-  } else if(res.data.code == 4){
-    router.replace('/perfectIdentity?isOver=1')
-    return res
-  }
-  if (res.headers && (res.headers['content-type'] === 'application/x-msdownload' || res.headers['content-type'] === 'application/vnd.ms-excel')) {
-    downloadUrl(res.request.responseURL)
-    return { data: { code: 1 } }
-  }
-  return res
-}, function (err) {
-  // Do something with response error
-  return Promise.reject(err)
-})
+//     return res
+//   } else if(res.data.code == 4){
+//     router.replace('/perfectIdentity?isOver=1')
+//     return res
+//   }
+//   if (res.headers && (res.headers['content-type'] === 'application/x-msdownload' || res.headers['content-type'] === 'application/vnd.ms-excel')) {
+//     downloadUrl(res.request.responseURL)
+//     return { data: { code: 1 } }
+//   }
+//   return res
+// }, function (err) {
+//   // Do something with response error
+//   return Promise.reject(err)
+// })
 
 /**
  * 字符串拼接
@@ -476,6 +476,37 @@ let checkLogin = (data) => axios.post(`/march/login`, JSON.stringify(data), { he
  */
   let recruitList = (params) => axios.get('/march/recruitList',{params: params});
 
+  /**
+ * 用户信息查询
+ * 字段
+ */
+ let userDetail = (userId) => axios.get('/march/admin/userDetail?userId=' + userId);
+
+   /**
+ * 修改账号状态
+ * 
+ */
+ let statusUpdate = (data) => axios.put(`/march/admin/userStatus`,JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+
+/**
+ * 我的推荐
+ */
+ let myResumeInfo = (userId) => axios.get('/march/getResumeInfoByUserId?userId='+userId);
+
+/*简历删除
+*/
+let resumetDel = (resumeInfoId) => axios.get('/march/deleResumeInfo?resumeInfoId='+resumeInfoId);
+
+/*获取职位详情
+*/
+let getRecruitIdDetail = (recruitId) => axios.get('/march/LookById?recruitId='+recruitId);
+
+/*
+简历上传
+  */
+let resumetAdd = (data) => axios.post(`/march/resumeInfoAdd`,JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+
+
 export {
   getChannelByUrl,
   getSystemOssByUrl, getUserDetail,
@@ -514,6 +545,6 @@ export {
   companyManageList, userAudit,
 
   //手机端登录
-  checkLogin, recruitList,
+  checkLogin, recruitList, userDetail, statusUpdate, myResumeInfo, resumetDel, getRecruitIdDetail,resumetAdd,
 
 }

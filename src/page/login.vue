@@ -17,14 +17,14 @@
             <div class="icon">
               <i class="iconfont icon-phone"></i>
             </div>
-            <input type="text" v-model="phone" placeholder="请输入手机号">
+            <input type="text" v-model="phone" placeholder="请输入账号">
           </div>
           <div class="g-form-item">
             <div class="icon">
               <i class="iconfont icon-anquan"></i>
             </div>
-            <input type="text" @blur="bridges.scrollToTop()" v-model="phoneCode" placeholder="请输入验证码">
-            <button class="g-vea-btn" @click="checktel">{{computedTime}}</button>
+            <input type="password" @blur="bridges.scrollToTop()" v-model="phoneCode" placeholder="请输入密码">
+            <!-- <button class="g-vea-btn" @click="checktel">{{computedTime}}</button> -->
           </div>
         </div>
         <div class="g-login-btn" @click="checkAll">登录</div>
@@ -104,76 +104,16 @@
         getData.checkLogin(data).then(res => {
           if (res.data.code === 200) {
             mobile.toast('登录成功')
-            this.$router.replace({path: '/index'})
-            return
-            this.$store.state.userName = res.data.data.userName;
-            mobile.setStore('userName', res.data.data.userName);
-            this.$store.state.parkToken = res.data.data.userToken;
-            mobile.setStore('parkToken', res.data.data.userToken);
-            mobile.setSession('parkToken', res.data.data.userToken);
-            this.$store.state.userPhone = res.data.data.userMobile;
-            mobile.setStore('userPhone', res.data.data.userMobile);
-            mobile.setStore('userCompanyId', res.data.data.userCompanyId);  
-            this.$store.state.userConfirmState = res.data.data.userConfirmState;
-            mobile.setStore('userConfirmState', res.data.data.userConfirmState);
-            // mobile.setSession('channelId', res.data.data.userChannelId)
-
-            let domain = mobile.getSession('domain');
-            //园区用户信息存储cookie，存储60天
-            // mobile.setCookie('channelId', res.data.data.channelId, 1);
-            mobile.setCookie('parkToken', res.data.data.userToken, 1);
-            mobile.setCookie('userPhone', res.data.data.userMobile, 1);
-            //园区用户信息存储cookie共享到其他系统，不设置过期时间
-            mobile.setCookie('userToken', res.data.data.userToken, '', domain);
-            mobile.setCookie('userMobile', res.data.data.userMobile, '', domain);
-
             
-            if (res.data.data.isLogin === 1) {
-              if(res.data.data.userConfirmState == 1){
-                this.$router.replace({path: '/perfectIdentity'})
-                return
-              }else if(res.data.data.userConfirmState == 2){
-                this.$router.replace('/perfectIdentity?isOver=1')
-                return
-              }else if(res.data.data.userConfirmState == 4){
-                mobile.toast('认证驳回，请重新提交')
-                this.$router.replace('/perfectIdentity')
-                return
-              }else{
-                if(res.data.data.userPostionState == 3 || res.data.data.userPostionState == 4){
-                  this.isOver = true;
-                  // 园区用户登录清除掉登录信息
-                  mobile.removeStore('parkToken')
-                  mobile.removeCookie('parkToken')
-                  this.$store.state.parkToken = ''
-                  mobile.removeCookie('userToken', domain)
-                  mobile.removeCookie('userMobile', domain)
-                  this.$store.state.userPhone = ''
-                  return
-                }else{
-                  let path = mobile.getSession('paths')
-                  let querys = JSON.parse(mobile.getSession('tempQuery'))
-                  let fullPath = localStorage.getItem('fullPath')
-                  if (fullPath) {
-                    if(fullPath.indexOf('#')>-1){
-                      window.location.href = fullPath
-                    }else{
-                      this.$router.replace(fullPath)
-                    }
-                    sessionStorage.clear()
-                  } else {
-                    this.$router.replace({path: '/index'})
-                  }
-                }
-              }
-            } else {
-              this.$router.replace({path: '/perfectIdentity'})
-              // if(mobile.getCookie("flag")){
-              //   this.$router.replace({path: '/perfectIdentity'})
-              // }else{
-              //   this.$router.replace({path: '/chooseIdentity'})
-              // }
-            }
+            this.$store.state.userName = res.data.data.name;
+            mobile.setStore('userName', res.data.data.name);
+            mobile.setStore('userId', res.data.data.id);
+            sessionStorage.setItem('userId', res.data.data.id)
+            sessionStorage.setItem('userName', res.data.data.name)
+            mobile.setStore('parkToken', res.data.data.password);
+            mobile.setSession('parkToken', res.data.data.password);
+            this.$router.replace({path: '/index'})
+            
 
           } else {
             mobile.toast(res.data.message)

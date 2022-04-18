@@ -9,7 +9,7 @@
         <div class="g-top-blank"></div>
         <div class="g-padinng-20" v-if="isData === 2">
           <ul style="margin-top: .2rem;">
-            <li class="g-enter-item" v-for="(item, index) in list" :key="index" @click.stop="$router.push('/enterpriseServiceDetails?odId=' + item.odId)">
+            <li class="g-enter-item" v-for="(item, index) in list" :key="index" @click.stop="$router.push('/postionDetail?checkType=' + item.recruitId+'&hrId='+item.hrId+'&userId='+userId),$store.state.isShare = true">
               <div class="flex-box g-enter-top">
                 <h4>{{item.stationTitle}}</h4>
                 <p class="bg-green">{{item.workPlace}}</p>
@@ -74,9 +74,11 @@
           // }
         ],
         isData: 1,
+        userId:'',
       }
     },
     mounted () {
+      this.userId = sessionStorage.getItem('userId')
       this.init();
     },
     components: {},

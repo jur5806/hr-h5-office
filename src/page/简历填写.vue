@@ -1,9 +1,9 @@
 <template>
   <div class="warp page1">
-    <v-zhajiheader headTitle="简历填写">
+    <v-zhajiheader headTitle="简历填写" v-if="!addSuccessShow">
     </v-zhajiheader>
-    <div class="g-visitbg-top"><img src="../assets/visitImg/bg.png" alt=""></div>
-    <v-scroll class="main-box1 scroll" ref="my_scroller">
+    <!-- <div class="g-visitbg-top"><img src="../assets/visitImg/bg.png" alt=""></div> -->
+    <v-scroll class="main-box1 scroll" ref="my_scroller" v-if="!addSuccessShow">
       <div style="position: relative;z-index:2">
         <div class="basic-info">
           <div class="g-basic-item">
@@ -16,7 +16,7 @@
               </div>
             </div>
             <div class="g-basic-input">
-              <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.name" @input="$store.state.visitorName = basic.name" placeholder="请输入姓名" maxlength="20" />
+              <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.recommendedName" placeholder="请输入姓名" maxlength="20" />
             </div>
           </div>
           <div class="g-basic-item">
@@ -29,7 +29,7 @@
               </div>
             </div>
             <div class="g-basic-input">
-              <input class="basic-input" v-model.trim="basic.phone" @input="$store.state.visitorPhone = basic.phone" placeholder="请输入手机号" maxlength="11" @blur="checkPhone;bridges.scrollToTop()"/>
+              <input class="basic-input" v-model.trim="basic.telephone" placeholder="请输入手机号" maxlength="11" @blur="checkPhone;bridges.scrollToTop()"/>
             </div>
           </div>
           <div class="g-basic-item">
@@ -42,7 +42,7 @@
               </div>
             </div>
             <div class="g-basic-input">
-              <input class="basic-input" v-model.trim="basic.idCard"  placeholder="请输入身份证号" @blur="checkIdCard;bridges.scrollToTop()"/>
+              <input class="basic-input" v-model.trim="basic.recommendedIdcard"  placeholder="请输入身份证号" @blur="checkIdCard;bridges.scrollToTop()"/>
             </div>
           </div>
           <div class="g-basic-item" @click.stop="show=true">
@@ -55,7 +55,7 @@
               </div>
             </div>
             <div class="g-basic-input flex-box" style="justify-content: flex-end">
-              <p class="p1">{{visitorsNumberOption[basic.visitorsNum].label}}</p>
+              <p class="p1">{{visitorsNumberOption[basic.sex].label}}</p>
               <i class="iconfont icon-jinru-copy icon"></i>
             </div>
           </div>
@@ -76,7 +76,7 @@
           </div>
         </div>
         <div class="visitor-warp">
-          <h3 class="visitor-title">基本信息</h3>
+          <!-- <h3 class="visitor-title">基本信息</h3> -->
           <!-- <ul class="objective-select">
             <li class="objective-select-item flex-box" :class="{active:basic.visitPurpose==item.id}"
                 v-for="(item,index) in objectiveList"
@@ -97,7 +97,7 @@
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <p v-if="basic.time" class="p1">{{basic.time}}</p>
+                <p v-if="basic.recommendedBirth" class="p1">{{new Date(basic.recommendedBirth.replace('-','/')).format('yyyy-MM-dd')}}</p>
                 <span v-else class="tip-info">请选择出生日期</span>
                 <!-- <i class="iconfont icon-jinru-copy icon"></i> -->
               </div>
@@ -112,7 +112,7 @@
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.companyId" placeholder="请输入民族" maxlength="20" />
+                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.recommendednation" placeholder="请输入民族" maxlength="20" />
               </div>
             </div>
             <div class="g-basic-item">
@@ -125,7 +125,7 @@
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.companyId" placeholder="请输入年龄" maxlength="20" />
+                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.recommendedAge" placeholder="请输入年龄" maxlength="20" />
               </div>
             </div>
             <div class="g-basic-item">
@@ -138,7 +138,7 @@
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.companyId" placeholder="请输入电子邮箱" maxlength="20" />
+                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.recommendedEmail" placeholder="请输入电子邮箱" maxlength="20" />
               </div>
             </div>
             <div class="g-basic-item">
@@ -151,7 +151,7 @@
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.companyId" placeholder="请输入家庭地址" maxlength="20" />
+                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.address" placeholder="请输入家庭地址" maxlength="20" />
               </div>
             </div>
             <div class="g-basic-item">
@@ -164,7 +164,7 @@
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.companyId" placeholder="请输入籍贯" maxlength="20" />
+                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.recommendedProvince" placeholder="请输入籍贯" maxlength="20" />
               </div>
             </div>
             <div class="g-basic-item" @click="show2 = true">
@@ -182,76 +182,94 @@
                 <i class="iconfont icon-jinru-copy icon"></i>
               </div>
             </div>
-            <div class="g-basic-item">
+            <div class="g-basic-item" @click="show3 = true">
               <div class="g-basic-label">
                 <div class="g-basic-icon g-basic-icon-mini">
                   <img src="../../static/img/reg-007.png" alt="">
                 </div>
                 <div class="g-basic-title g-basic-title-mini">
-                  <p><span class="g-font-danger">*</span></p>
+                  <p>婚姻状况<span class="g-font-danger">*</span></p>
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <p class="p1" v-if="basic.recommendedPolitical">{{basic.recommendedPolitical}}</p>
-                <p v-else style="color: gainsboro;font-size:.3rem">请选择政治面貌</p>
+                <p class="p1" v-if="basic.recommendedMarital">{{basic.recommendedMarital}}</p>
+                <p v-else style="color: gainsboro;font-size:.3rem">请选择婚姻状况</p>
                 <i class="iconfont icon-jinru-copy icon"></i>
               </div>
             </div>
-            <div class="g-basic-item" @click="$router.push('/chooseVisitor')">
+            <div class="g-basic-item" @click="show2 = true">
               <div class="g-basic-label">
                 <div class="g-basic-icon g-basic-icon-mini">
-                  <img src="../../static/img/reg-008.png" alt="">
+                  <img src="../../static/img/reg-007.png" alt="">
                 </div>
                 <div class="g-basic-title g-basic-title-mini">
-                  <p>拜访人</p>
+                  <p>所修专业<span class="g-font-danger">*</span></p>
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <!-- <p class="p1">{{$store.state.visitorReviewPersonInfo.userName}}</p> -->
-                <span class="tip-info">请选择拜访人</span>
-                <!-- <i class="iconfont icon-jinru-copy icon"></i> -->
+                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.recommendedMajor" placeholder="请输入所修专业" maxlength="20" />
               </div>
             </div>
+            
           </div>
+          <h3 class="visitor-content flex-box">
+              <div class="g-basic-content">
+                <img src="../../static/img/reg-009.png" alt="">
+              </div>
+              <p>荣誉证书</p>
+            </h3>
+            <div class="visitor-textarea">
+              <textarea v-model.trim="basic.recommendedGainCertificate" placeholder="请填写1-3个荣誉证书" @blur="bridges.scrollToTop()" ></textarea>
+            </div>
+            <h3 class="visitor-content flex-box">
+              <div class="g-basic-content">
+                <img src="../../static/img/reg-009.png" alt="">
+              </div>
+              <p>专业技能</p>
+            </h3>
+            <div class="visitor-textarea">
+              <textarea v-model.trim="basic.recommendedProfessionalInfo" placeholder="专业技能" @blur="bridges.scrollToTop()" ></textarea>
+            </div>
+            <h3 class="visitor-content flex-box">
+              <div class="g-basic-content">
+                <img src="../../static/img/reg-009.png" alt="">
+              </div>
+              <p>工作经历</p>
+            </h3>
+            <div class="visitor-textarea">
+              <textarea v-model.trim="basic.recommendedWorkInfo" placeholder="工作经历" @blur="bridges.scrollToTop()" ></textarea>
+            </div>
+            <h3 class="visitor-content flex-box">
+              <div class="g-basic-content">
+                <img src="../../static/img/reg-009.png" alt="">
+              </div>
+              <p>项目经验</p>
+            </h3>
+            <div class="visitor-textarea">
+              <textarea v-model.trim="basic.recommendedProgramInfo" placeholder="" @blur="bridges.scrollToTop()" ></textarea>
+            </div>
           <h3 class="visitor-content flex-box">
             <div class="g-basic-content">
               <img src="../../static/img/reg-009.png" alt="">
             </div>
-            <p>备注</p>
+            <p>自我评价</p>
           </h3>
           <div class="visitor-textarea">
-            <textarea v-model.trim="basic.content" placeholder="" @input="$store.state.visitorContent = basic.content"  @blur="bridges.scrollToTop()" maxlength="200"></textarea>
+            <textarea v-model.trim="basic.recommendedSelfEvaluation"  @blur="bridges.scrollToTop()"></textarea>
           </div>
           <h3 class="visitor-content flex-box">
             <div class="g-basic-content">
               <img src="../../static/img/reg-011.png" alt="">
             </div>
-            <p>图片<span v-if="this.$store.state.channelId==274" class="g-font-danger">*</span></p>
+            <p>简历图片<span v-if="this.$store.state.channelId==274" class="g-font-danger">*</span></p>
           </h3>
           <div class="visitor-img">
-            <v-upload-file :number="5" :size="5" :img="true" @onFileChange="onImgChange"></v-upload-file>
+            <v-upload-file :number="1" :size="1" :img="true" @onFileChange="onImgChange"></v-upload-file>
           </div>
         </div>
-        <!-- <div class="basic-info people">
-          <div class="g-basic-item" @click="$router.push('/chooseCompany')">
-            <div class="g-basic-label">
-              <div class="g-basic-icon">
-                <img src="../../../static/img/visitor-002.png" alt="">
-              </div>
-              <div class="g-basic-title">
-                <p v-if="$store.state.visitorCompanyInfo.companyId">
-                  {{$store.state.visitorCompanyInfo.companyName}}</p>
-                <p v-else>拜访单位</p>
-              </div>
-            </div>
-            <div class="g-basic-input flex-box" style="justify-content: flex-end">
-              <i class="iconfont icon-jinru-copy icon"></i>
-            </div>
-          </div>
-        </div> -->
       </div>
     </v-scroll>
-    <v-visit-footer-square title="提交来访登记" @submits="submits"></v-visit-footer-square>
+    <v-visit-footer-square title="提交简历" @submits="submits"></v-visit-footer-square>
     <yd-popup class="g-confirm g-zhaji-confirm2" v-model="show" position="center" width="6.3rem"
               :close-on-masker="true">
       <div class="g-choose-confirm">
@@ -279,14 +297,23 @@
         </div>
       </div>
     </yd-popup>
+    <yd-popup class="g-confirm g-zhaji-confirm2" v-model="show3" position="center" width="6.3rem"
+              :close-on-masker="true">
+      <div class="g-choose-confirm">
+        <div class="g-choose-box" :class="{active:basic.recommendedMarital===item}"
+             v-for="(item,index) in recommendedMaritalList" @click="setRecommendedMarital(item,index)">
+          {{item}}
+        </div>
+      </div>
+    </yd-popup>
     <yd-popup class="g-confirm g-zhaji-confirm2" v-model="addSuccessShow" position="center" width="5rem"
               :close-on-masker="true">
       <div class="pay-popup-warp" style="height:auto">
         <div class="pay-popup-box" style="height:auto">
           <div class="pay-popup-icon1 tip"></div>
-          <div class="pay-popup-info1">{{`访客登记提交成功，请耐心等待审核结果`}}</div>
+          <div class="pay-popup-info1">{{`简历提交成功，请耐心等待审核结果`}}</div>
         </div>
-        <div class="pay-popup-bottom"  @click.stop="addSuccessShow = false;$router.go(-1)">关闭</div>
+        <!-- <div class="pay-popup-bottom"  @click.stop="addSuccessShow = false;$router.go(-1)">关闭</div> -->
       </div>
     </yd-popup>
 
@@ -300,6 +327,14 @@
         <div class="cancel-photo" @click="showExample = false">暂不录入</div>
       </div>
     </yd-popup>
+    <div class="g-submit-over flex-box" v-if="addSuccessShow">
+        <div class="g-submit-over-box clearfix">
+          <div class="g-over-pic">
+            <img class="f-adapt-img" src="../assets/images/in-review.png" alt="">
+          </div>
+          <p class="g-over-content">认证审核中，请耐心等待！</p>
+        </div>
+      </div>
 
   </div>
 </template>
@@ -312,7 +347,7 @@
   export default {
     data() {
       return {
-        addSuccessShow: false,
+        addSuccessShow: false,//是否完成信息完善
         objectiveList: [
           {
             title: '业务来访',
@@ -332,17 +367,29 @@
           },
         ],
         basic: {
-          name: '',
-          phone: '',
-          idCard: '',
-          visitorsNum: 1,
-          recommendedEducation:'',
-          effectiveTime: 1,
-          visitPurpose: '',
-          content: '',
-          photo: '',
-          photoId: '',
-          time: '',
+          recommendedName: '',
+          tjId: '',
+          recommendedProvince: '',
+          recommendednation: '',
+          recommendedBirth: '',
+          sex: 0,
+          recommendedAge:'',
+          recommendedPolitical: '',
+          recommendedEducation: '',
+          recommendedMarital:'',
+          recommendedIdcard: '',
+          telephone: '',
+          address:'',
+          recommendedMajor:'',
+          recommendedEmail:'',
+          recommendedAttend:'',
+          recommendedSelfEvaluation:'',
+          recommendedGainCertificate:'',
+          recommendedProgramInfo: '',
+          recommendedWorkInfo: '',
+          recommendedProfessionalInfo:'',
+          recommendedPhoto:'',
+          hrId:'',
         },
         faceInfo: {
           facePersonName: '',
@@ -351,19 +398,18 @@
           {label: '男', value: 0}, {label: '女', value: 1}
         ],
         recommendedEducationList: [
-          {label: '九年教育', value: 1}, 
+          {label: '九年教育', value: 1},
           {label: '大专', value: 2},
           {label: '本科', value: 3},
           {label: '研究生', value: 4},
           {label: '其他', value: 6},
         ],
-        recommendedPoliticalList:[
-          '群众','共青团员','党员'
-        ],
+        recommendedPoliticalList:['群众','共青团员','党员'],
+        recommendedMaritalList:['已婚','未婚','离异'],
         show: false,
         show1: false,
         show2: false,
-        userId: '',
+        show3: false,
         isSubmit: false,
         carNumber:"",
         showExample:false,
@@ -374,102 +420,9 @@
       }
     },
     mounted() {
-      getData.getVisitTimeType().then(res => {
-        if (res.data.code === 1) {
-          this.timeType = res.data.data.timeType;
-          if(this.timeType == 1){
-            this.$store.state.startTime= new Date().format('yyyy-MM-dd 00:00:00');
-            this.$store.state.endTime= new Date().format('yyyy-MM-dd 23:59:59');
-          };
-        }
-      })
-      if(this.$route.query.visitorReviewId){
-        getData.showUnreviewedVisitorDetail(this.$route.query.visitorReviewId).then(res => {
-          if (res.data.code !== 1) {
-            mobile.toast(res.data.message);
-            return
-          }
-          this.isAdd = res.data.data.isAdd;
-          let visitorReviewPersonInfo = {
-            userId: res.data.data.visitorReview.visitorReviewPersonId,
-            userName: res.data.data.visitorReview.visitorReviewPersonName,
-          }
-          let visitorCompanyInfo = {
-            companyIsPark: res.data.data.visitorReview.visitorReviewIsPark,
-            companyId: res.data.data.visitorReview.visitorReviewCompanyId,
-            companyName: res.data.data.visitorReview.visitorReviewIsPark==1?res.data.data.companyContractName:"园区运营方",
-          }
-
-          if (!this.isAdd) {
-
-            this.$router.push({path:'/parkVisitingDetail',query:{id:res.data.data.visitorReview.visitorReviewId,status:res.data.data.visitorReview.visitorReviewStatus}})
-          }
-          let visitInfo = res.data.data.visitorReview;
-          // let companyContractName = res.data.data.companyContractName;
-          // let visitorCreateTime = res.data.data.visitorCreateTime
-          // let carNums = res.data.data.carNums
-
-          this.$store.state.visitorReviewPersonInfo = visitorReviewPersonInfo;
-          this.$store.state.visitorCompanyInfo = visitorCompanyInfo
-          this.$store.state.visitInfo = visitInfo
-          this.visitorReview = visitInfo
-          // this.$store.state.companyContractName = companyContractName
-          // this.$store.state.visitorCreateTime = visitorCreateTime
-          // this.$store.state.carNums = carNums
-        })
-      }
-
-
-
-
-      if (this.$route.query.first) {
-        this.basic.name = '';
-        this.basic.phone = '';
-        this.basic.visitorsNum = 1;
-        this.basic.effectiveTime = 1;
-        this.basic.visitPurpose = '';
-        this.basic.content = '';
-        this.basic.photo = '';
-        this.basic.photoId = '';
-        this.basic.idCard = '';
-        this.$store.state.visitorIdCard = '';
-        this.$store.state.visitorName = '';
-        this.$store.state.visitorPhone = '';
-        this.$store.state.visitorNum = 1;
-        this.$store.state.visitorTime = 1;
-        this.$store.state.visitorPurpose = '';
-        this.$store.state.visitorContent = '';
-        this.$store.state.visitorPhoto = '';
-        this.$store.state.visitorPhotoId = '';
-        this.$store.state.startTime = new Date().format('yyyy-MM-dd') + ' 00:00:00';
-        this.$store.state.endTime = new Date().format('yyyy-MM-dd') + ' 23:59:59';
-        this.$store.state.visitorCompanyInfo = {};
-        this.$store.state.carNumber = [];
-        this.$store.state.carNumberList = [];
-        this.$store.state.visitorReviewPersonInfo = {};
-        this.$router.replace('/parkVisitorRegister');
-      } else {
-        this.basic.name = this.$store.state.visitorName
-        this.basic.phone = this.$store.state.visitorPhone
-        this.basic.visitorsNum = this.$store.state.visitorNum
-        this.basic.effectiveTime = this.$store.state.visitorTime
-        this.basic.visitPurpose = this.$store.state.visitorPurpose
-        this.basic.content = this.$store.state.visitorContent
-        this.basic.photo = this.$store.state.visitorPhoto;
-        this.basic.photoId = this.$store.state.visitorPhotoId
-        this.basic.idCard = this.$store.state.visitorIdCard;
-        if(this.$store.state.startTime&&this.$store.state.endTime){
-          this.basic.time = this.formatDate(this.$store.state.startTime) + ' ~ '+ this.formatDate(this.$store.state.endTime)
-        }
-      }
-      getData.getUserDetail().then(res => {
-        if (res.data.code === 1) {
-          this.userId = res.data.data.user.userId
-        } else {
-          mobile.toast(res.data.message)
-        }
-      })
-      
+      this.basic.recruitId = Number(this.$route.query.checkType);
+      this.basic.hrId = Number(this.$route.query.hrId);
+      this.basic.tjId = Number(this.$route.query.userId);
     },
     components: {},
 
@@ -482,7 +435,7 @@
         return `${datam}/${datad}`;
       },
       onConfirmselectTime(date){
-        this.basic.time = new Date(date).format('yyyy-MM-dd');
+        this.basic.recommendedBirth = new Date(date).format('yyyy-MM-dd hh:mm:ss');
         this.showTimeSelect = false
       },
       selectTime(row, index) {
@@ -496,14 +449,13 @@
         this.$store.state.visitorPurpose = row.id;
       },
       checkPhone() {
-        return mobile.rule.phone(this.basic.phone)
+        return mobile.rule.phone(this.basic.telephone)
       },
       checkIdCard () {
-        return mobile.rule.idcard(this.basic.idCard)
+        return mobile.rule.idcard(this.basic.recommendedIdcard)
       },
       visitorsCheck(row, index) {
-        this.basic.visitorsNum = row.value;
-        this.$store.state.visitorNum = row.value;
+        this.basic.sex = row.value;
         this.show = false;
       },
       setRecommendedEducation(row, index) {
@@ -513,6 +465,10 @@
       setRecommendedPolitical(row, index) {
         this.basic.recommendedPolitical = row;
         this.show2 = false;
+      },
+      setRecommendedMarital(row, index) {
+        this.basic.recommendedMarital = row;
+        this.show3 = false;
       },
       lookPhoto () {
         if (this.$store.state.visitorPhoto) {
@@ -539,7 +495,7 @@
           return
         }
         this.isSubmit = true
-        if (!this.basic.name) {
+        if (!this.basic.recommendedName) {
           this.isSubmit = false
           mobile.toast('请输入姓名');
           return
@@ -554,61 +510,19 @@
             return
           }
         }
-
-        // if (!this.basic.photoId) {
-        //   this.isSubmit = false
-        //   mobile.toast('请录入人脸');
-        //   return
-        // }
-        if (!this.$store.state.visitorCompanyInfo.companyId) {
+        if (!this.basic.recommendedEducation) {
           this.isSubmit = false
-          mobile.toast('请选择拜访单位');
+          mobile.toast('请选择学历');
           return
         }
-        if (!this.$store.state.startTime || !this.$store.state.endTime) {
-          this.isSubmit = false
-          mobile.toast('请选择来访时间');
-          return
-        }
-        if(this.$store.state.channelId==274){
-          if(this.visitorReviewFileUrl.length==0){
-            this.isSubmit = false
-            mobile.toast('请选择并提交图片')
-            return
-          }
-        }
-
-        /**
-         * 访客新增登记
-         * visitorReviewName	是	String	访客姓名
-         visitorReviewContract	是	String	联系方式
-         visitorReviewCompanyId	是	Long	拜访企业id
-         visitorReviewIdcard	是	String	身份证号码
-         visitorReviewRemark	否	String	备注
-         visitorReviewStartTime	是	Date	来访时间-开始
-         visitorReviewEndTime	是	Date	来访时间-结束
-         visitorReviewUserId	是	long	访客用户id
-         visitorReviewVisitType	是	int	拜访类型(1业务来访、2人员面试、3参观访问、4其他来访)
-         visitorReviewNum	是	int	来访人数
-         visitorReviewFaceId	long	访客人脸主键id
-         visitorReviewIsPark	int	是否是园区访客(0/非园区访客 1/园区访客)
-         carNumber	是	string	车辆编号
-         visitorReviewPersonId	是	int	拜访人
-         visitorReviewPersonName	是	string	拜访人名称
-         this.basic.name = '';
-         this.basic.phone = '';
-         this.basic.visitorsNum = 1;
-         this.basic.effectiveTime = 1;
-         this.basic.visitPurpose = '';
-         this.basic.content = '';
-         this.basic.photo = '';
-         this.basic.photoId = '';
-         */
-        if(this.$route.query.visitorReviewId){
-          this.addId()
-        }else{
-          this.addNotId();
-        }
+         getData.resumetAdd(this.basic)
+          .then(resp => {
+            if (resp.data.code === 200) {
+              this.isSubmit = false
+              this.addSuccessShow = true
+            } else {
+            }
+          }).catch(failResponse => {})
 
       },
       addId(){
@@ -1189,6 +1103,136 @@
         display: inline-block;
         @include sc(.56rem, $fc);
         padding: .1rem;
+      }
+    }
+  }
+  .g-form-box,.g-submit-over>.g-submit-over-box{
+    margin: auto;
+    /* padding-top: .46rem;
+    width: 6.9rem;
+    border-radius: .12rem;
+    box-shadow: 0 0 1rem RGBA(214, 214, 214, 0.8); */
+    .g-form-title{
+      margin-bottom: .22rem;
+      @include sc(.32rem,#333);
+      line-height: .4rem;
+      font-weight: 700;
+      text-align: center;
+    }
+    .g-form-input{
+      margin: 0 auto .3rem;
+      width: 5.26rem;
+      .g-label{
+        @include sc(.28rem,#333);
+        line-height: .7rem;
+      }
+      .g-input{
+        @include wh(100%,.58rem);
+        border: 1px solid #cccccc;
+        @include fj();
+        align-items: center;
+        border-radius: .04rem;
+        padding-right: .13rem;
+        input{
+          @include wh(calc(100% - .44rem),100%);
+          padding-left: .25rem;
+          @include sc(.26rem,#333);
+          &::placeholder{
+            color: #CCCCCC;
+          }
+        }
+        .icon-quxiao{
+          @include wh(.44rem,.44rem);
+          @include sc(.28rem,#777777);
+          line-height: .44rem;
+          text-align: center;
+        }
+        .i-sanjiao{
+          position: relative;
+          @include wh(.44rem,.44rem);
+          &:before{
+            content: '';
+            @include cl;
+            top: .15rem;
+            @include wh(0,0);
+            border-width: .14rem .11rem;
+            border-style: solid;
+            border-color: #333333 transparent transparent transparent;
+          }
+        }
+      }
+    }
+    .g-form-btn{
+      display: block;
+      margin: .5rem auto;
+      @include wh(5.26rem,.7rem);
+      border-radius: .35rem;
+      background: #3f7def;
+      @include sc(.28rem,#fff);
+    }
+  }
+  .g-search-main,.g-submit-over{
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include wh(100%,100%);
+    background: #fff;
+    .g-search-input{
+      margin: .3rem auto 0;
+      @include wh(6.9rem,.6rem);
+      padding: 0 .23rem 0 0;
+      @include fj();
+      align-items: center;
+      border: 1px solid #777777;
+      border-radius: .3rem;
+      .iconfont{
+        display: block;
+        @include wh(.44rem,.44rem);
+        @include sc(.32rem,#dcdee1);
+        text-align: center;
+        line-height: .44rem;
+      }
+      input{
+        @include wh(calc(100% - .44rem),100%);
+        padding-left: .3rem;
+        @include sc(.28rem,#777777);
+        &::placeholder{
+          color: #ccc;
+        }
+      }
+    }
+    .g-company-list{
+      margin-top: .09rem;
+      padding: 0 .3rem;
+      .g-list-item{
+        @include wh(100%,.89rem);
+        border-bottom: 1px solid #D8DFE4;
+        @include sc(.28rem,#777777);
+        line-height: .89rem;
+      }
+    }
+  }
+  .g-submit-over{
+    .g-submit-over-box{
+      padding-bottom: 0;
+      .g-over-pic{
+        margin: .24rem auto;
+        @include wh(3.46rem,2.54rem);
+      }
+      .g-over-content{
+        /* margin: .36rem auto; */
+        text-align: center;
+        /* width: 3.3rem; */
+        @include sc(.3rem,#333333);
+        line-height: .54rem;
+      }
+      .g-over-btn{
+        display: block;
+        margin: .57rem auto .7rem;
+        @include wh(3.28rem,.68rem);
+        border-radius: .34rem;
+        border: .02rem solid #3f7def;
+        @include sc(.26rem,#3f7def);
       }
     }
   }

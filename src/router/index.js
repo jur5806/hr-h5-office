@@ -2,6 +2,17 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 const login = r => require.ensure([], () => r(require('../page/login')), 'login')/* 登录 */
+// 首页
+const index = r => require.ensure([], () => r(require('../page/index')), 'index')
+const mine = r => require.ensure([], () => r(require('../page/mine')), 'mine') //我的
+const setUp = r => require.ensure([], () => r(require('../page/设置')), 'setUp')/* 设置 */
+const myEnroll = r => require.ensure([], () => r(require('../page/我的推荐')), 'myEnroll')/* 设置 */
+const postionDetail = r => require.ensure([], () => r(require('../page/职位详情')), 'postionDetail')/* 职位详情*/
+const inputInfo = r => require.ensure([], () => r(require('../page/简历填写')), 'inputInfo')/* 简历填写*/
+
+
+
+
 const perfectIdentity = r => require.ensure([], () => r(require('../page/信息完善')), 'perfectIdentity')/* 信息完善 */
 
 const incubateList = r => require.ensure([], () => r(require('../page/园企/入孵审核.vue')), 'incubateList') // 入孵审核
@@ -31,8 +42,7 @@ const contactDetail = r => require.ensure([], () => r(require('../page/联系园
 // 企业通讯录
 const addressBookList = r => require.ensure([], () => r(require('../page/企业通讯录/企业通讯录列表')), 'addressBookList') // 企业通讯录列表
 
-// 首页
-const index = r => require.ensure([], () => r(require('../page/index')), 'index')
+
 
 // 企业内部管理
 const userManageList = r => require.ensure([], () => r(require('../page/企业内部管理/管理列表')), 'userManageList') // 企业内部管理列表
@@ -56,13 +66,19 @@ export default new Router({
   routes: [
     {
       path: '',
-      redirect: '/index'
+      redirect: '/login'
     },
     {
       path: '/index',
-      name: '服务',
+      name: '求职中心',
       meta: {nokeepAlive: true, keepLogin: false},
       component: index
+    },
+    {
+      path: '/mine',
+      name: '我的',
+      meta: {nokeepAlive: true, keepLogin: false},
+      component: mine
     },
     {
       path: '/login',
@@ -70,6 +86,35 @@ export default new Router({
       meta: {nokeepAlive: true, keepLogin: false},
       component: login
     },
+    {
+      path: '/setUp',
+      name: '设置',
+      meta: {nokeepAlive: true, keepLogin: true},
+      component: setUp
+    },
+    {
+      path: '/myEnroll',
+      name: '我的推荐',
+      meta: {nokeepAlive: true, keepLogin: true},
+      component: myEnroll
+    },
+    {
+      path: '/postionDetail',
+      name: '职位详情',
+      meta: {nokeepAlive: true, keepLogin: true},
+      component: postionDetail
+    },
+    {
+      path: '/inputInfo',
+      name: '投递简历',
+      meta: {nokeepAlive: true, keepLogin: true},
+      component: inputInfo
+    },
+
+
+
+
+
     {
       path: '/perfectIdentity',
       name: '信息完善',
