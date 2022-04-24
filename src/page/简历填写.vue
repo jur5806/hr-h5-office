@@ -273,7 +273,7 @@
     <yd-popup class="g-confirm g-zhaji-confirm2" v-model="show" position="center" width="6.3rem"
               :close-on-masker="true">
       <div class="g-choose-confirm">
-        <div class="g-choose-box" :class="{active:basic.visitorsNum===item.value}"
+        <div class="g-choose-box" :class="{active:basic.sex===item.value}"
              v-for="(item,index) in visitorsNumberOption" @click="visitorsCheck(item,index)">
           {{item.label}}
         </div>
@@ -449,7 +449,10 @@
         this.$store.state.visitorPurpose = row.id;
       },
       checkPhone() {
-        return mobile.rule.phone(this.basic.telephone)
+        var myReg = /^1[3|4|5|7|8][0-9]\d{4,8}$/
+        if (!myReg.test(val)) {
+          mobile.toast('手机号格式错误')
+        }
       },
       checkIdCard () {
         return mobile.rule.idcard(this.basic.recommendedIdcard)

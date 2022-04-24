@@ -9,6 +9,7 @@ const setUp = r => require.ensure([], () => r(require('../page/设置')), 'setUp
 const myEnroll = r => require.ensure([], () => r(require('../page/我的推荐')), 'myEnroll')/* 设置 */
 const postionDetail = r => require.ensure([], () => r(require('../page/职位详情')), 'postionDetail')/* 职位详情*/
 const inputInfo = r => require.ensure([], () => r(require('../page/简历填写')), 'inputInfo')/* 简历填写*/
+const myNews = r => require.ensure([], () => r(require('../page/我的信息')), 'inputInfo')/* 我的信息*/
 
 
 
@@ -109,6 +110,12 @@ export default new Router({
       name: '投递简历',
       meta: {nokeepAlive: true, keepLogin: true},
       component: inputInfo
+    },
+    {
+      path: '/myNews',
+      name: '我的信息',
+      meta: {nokeepAlive: true, keepLogin: true},
+      component: myNews
     },
 
 

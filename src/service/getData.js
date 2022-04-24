@@ -506,6 +506,12 @@ let getRecruitIdDetail = (recruitId) => axios.get('/march/LookById?recruitId='+r
   */
 let resumetAdd = (data) => axios.post(`/march/resumeInfoAdd`,JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
 
+/**
+ * 用户信息修改
+ * 字段
+ */
+ let userInfoEdit = (data) => axios.post(`/march/admin/userUpdate`,JSON.stringify(data), { headers: { 'Content-Type': 'application/json' } });
+
 
 export {
   getChannelByUrl,
@@ -545,6 +551,6 @@ export {
   companyManageList, userAudit,
 
   //手机端登录
-  checkLogin, recruitList, userDetail, statusUpdate, myResumeInfo, resumetDel, getRecruitIdDetail,resumetAdd,
+  checkLogin, recruitList, userDetail, statusUpdate, myResumeInfo, resumetDel, getRecruitIdDetail, resumetAdd, userInfoEdit,
 
 }
