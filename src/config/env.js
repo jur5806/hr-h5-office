@@ -7,7 +7,7 @@ let channelId;
 let phone;
 let parkToken;
 if (process.env.NODE_ENV == 'development') {
-  ossUrl = 'http://test-media-api.test176.cn'//测式网
+  ossUrl = 'http://test-media-api.test176.cn'
   // 本地调试时配置的信息
   localStorage.setItem('channelAppLogoUrl', 'http://test-main.test176.cn/upload/logo/api1536550090002.jpg')
   localStorage.setItem('companyApiUrl', 'https://test-mh-api.test176.cn/')

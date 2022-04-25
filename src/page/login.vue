@@ -3,8 +3,7 @@
     <v-scroll class="main-box2 scroll" ref="my_scroller">
       <div class="g-logo">
         <div class="g-page-title"></div>
-        <img v-if="$store.state.channelAppLogoUrl" class="g-logo-img" :src="$store.state.channelAppLogoUrl" alt="">
-        <img v-else class="g-logo-img" src="http://park.hzqisheng.cn/v3.5/logo.png" alt="">
+        <img class="g-logo-img" src="../assets/images/wuye-g.png" alt="">
       </div>
       <div class="g-login-box">
         <div class="g-wave">
@@ -33,17 +32,6 @@
           点击确定表示同意《<span @click.stop="$router.push('/serviceAgreement')">服务协议</span>》
         </div>
       </div>
-      <div class="g-submit-over flex-box" v-if="isOver">
-        <div class="g-submit-over-box clearfix">
-          <div class="g-over-pic">
-            <img class="f-adapt-img" src="../assets/images/zzd-logo.png" alt="">
-          </div>
-          <div class="g-over-content">
-            <p>园区用户请使用浙政钉</p>
-            <p>查看相关服务</p>
-            </div>
-        </div>
-      </div>
     </v-scroll>
   </div>
 </template>
@@ -59,7 +47,6 @@
         phoneCode: '',
         computedTime: '获取',
         agree: true,
-        isOver: false,
       }
     },
     activated () {
