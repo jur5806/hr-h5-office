@@ -18,7 +18,7 @@
               <div class="flex-box g-enter-bottom">
                 <div class="flex-box">
                   <img class="img1" src="../assets/enterpriseImg/handle-time.png" alt="">
-                  <p class="p-times">{{new Date(item.rcStartTime).format('yyyy-MM-dd hh:mm:ss')}} 提交</p>
+                  <p class="p-times">{{new Date(item.rcStartTime).format('yyyy-MM-dd')}} 提交</p>
                 </div>
                 <!-- <p class="p-pingjia" v-if="!item.isComment && item.odStatus === 4" @click.stop="$router.push('/enterpriseServiceEvaluation?odId=' + item.odId)">评价</p> -->
               </div>

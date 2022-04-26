@@ -12,6 +12,7 @@ import slideSelect from './slideSelect'
 import loadinglist from './loadinglist'
 import userframe from './userframe'
 import collapse from './collapse'
+import photo from './takePhoto'
 
 
 
@@ -39,5 +40,6 @@ export default {
   
   meterHeader,
   popupSelect,
-  uploadFile
+  uploadFile,
+  photo
 }

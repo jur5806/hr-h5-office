@@ -9,8 +9,9 @@
             <!-- <i class="iconfont icon-hetong"></i> -->
             <p class="p-contract-tit">{{info.stationTitle}}</p>
           </div>
-          <p class="p-cont g-contract-mar">所属部门：{{info.departmentName|empty}}</p>
-          <p class="p-cont g-contract-mar">岗位招聘截止时间：{{new Date(info.rcEndTime.replace(/-/g,'/')).format('yyyy-MM-dd')}}</p>
+          <p class="p-cont g-contract-mar">岗位名称：{{info.stationName|empty}}</p>
+          <p class="p-cont g-contract-mar">岗位招聘截止时间：
+            {{info.rcEndTime?new Date(info.rcEndTime.replace(/-/g,'/')).format('yyyy-MM-dd'):'-'}}</p>
           <p class="p-cont g-contract-mar">工作地点：{{info.workPlace|empty}}</p>
           <p class="p-cont g-contract-mar">需求人数：{{info.rcDepartmentNum|empty}}</p>
         </div>
@@ -163,150 +164,6 @@
         if (type === 2) {
           this.showShare = true;
         }
-
-        let name = this.$store.state.channelName
-        window.webkit.messageHandlers.Share.postMessage({
-          title: `${name}诚挚邀您拜访`,
-          content: '点击此链接，完善拜访信息并提交后即可快速通行，进出园区。',
-          imageUrl: 'http://park.hzqisheng.cn/share.png',
-          url: `${window.location.origin}/#/parkVisitorRegister?shareNum=1&visitorReviewId=${this.visitorReviewId}`
-        });
-        if (this.$store.state.platform === 'iOS' || this.$store.state.platform === 'Android') {
-          if (this.$store.state.platform === 'iOS') {
-            window.webkit.messageHandlers.Share.postMessage({
-              title: `${name}诚挚邀您拜访`,
-              content: '点击此链接，完善拜访信息并提交后即可快速通行，进出园区。',
-              imageUrl: 'http://park.hzqisheng.cn/share.png',
-              url: `${window.location.origin}/#/parkVisitorRegister?shareNum=1&visitorReviewId=${this.visitorReviewId}`
-            });
-          //  &noPublic=${this.$route.query.noPublic}&userId=${this.$route.query.userId}&isShare=true
-          } else {
-            window.test.Share(`${name}诚挚邀您拜访`, '点击此链接，完善拜访信息并提交后即可快速通行，进出园区。', 'http://park.hzqisheng.cn/share.png', `${window.location.origin}/#/parkVisitorRegister?shareNum=1&visitorReviewId=${this.visitorReviewId}`);
-          }
-          this.loading = false
-          return
-        }
-        let shareCont = {
-          title: `${name}诚挚邀您拜访`,
-          shareContent: '点击此链接，完善拜访信息并提交后即可快速通行，进出园区。',
-          url: `${window.location.origin}/#/parkVisitorRegister?shareNum=1&visitorReviewId=${this.visitorReviewId}`,
-          imgUrl: 'http://park.hzqisheng.cn/share.png'
-        };
-        getData.share(encodeURIComponent(window.location.origin+'/')).then(res => {  //配置微信API
-          this.$store.state.appId = res.data.data.appId;
-          wx.config({
-            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: res.data.data.appId, // 必填，公众号的唯一标识
-            timestamp: res.data.data.timestamp, //// 必填，生成签名的时间戳
-            nonceStr: res.data.data.noncestr, // 必填，生成签名的随机串
-            signature: res.data.data.signature,// 必填，签名，见附录1
-            jsApiList: [
-              'onMenuShareTimeline',
-              'onMenuShareAppMessage',
-              'onMenuShareQQ',
-              'onMenuShareWeibo',
-              'onMenuShareQZone',
-            ]
-          });
-          // mobile.wxshare(wx, shareCont);
-          let title = shareCont.title
-          let shareContent = shareCont.shareContent
-          let url = shareCont.url
-          let imgUrl = shareCont.imgUrl
-          let _this = this
-          wx.ready(function () {
-            wx.checkJsApi({
-              jsApiList: [
-                'onMenuShareTimeline', // 分享到朋友圈
-                'onMenuShareAppMessage', // 分享给好友
-                'onMenuShareQQ', // 分享到QQ
-                'onMenuShareWeibo', // 分享到微博
-                'onMenuShareQZone' // 分享到QQ空间
-              ]
-            });
-            wx.onMenuShareTimeline({
-              title: title, // 分享标题
-              link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: imgUrl, // 分享图标
-              success: function () {
-                mobile.toast('分享成功')
-                _this.shareSuccess()
-                _this.showShare = false
-                _this.$router.go(-1)
-              },
-              cancel: function () {
-                mobile.toast('取消分享')
-              }
-            });
-            wx.onMenuShareAppMessage({
-              title: title, // 分享标题
-              desc: shareContent, // 分享描述
-              link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: imgUrl, // 分享图标
-              type: 'link', // 分享类型,music、video或link，不填默认为link
-              dataUrl: '', // 如果type是music或video，则要提供数据链接，默认为空
-              success: function () {
-                mobile.toast('分享成功')
-                _this.shareSuccess()
-                _this.showShare = false
-                _this.$router.go(-1)
-              },
-              cancel: function () {
-                mobile.toast('取消分享')
-              }
-            });
-            wx.onMenuShareQQ({
-              title: title, // 分享标题
-              desc: shareContent, // 分享描述
-              link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: imgUrl, // 分享图标
-              success: function () {
-                mobile.toast('分享成功')
-                _this.shareSuccess()
-                _this.showShare = false
-                _this.$router.go(-1)
-              },
-              cancel: function () {
-                mobile.toast('取消分享')
-              }
-            });
-            wx.onMenuShareWeibo({
-              title: title, // 分享标题
-              desc: shareContent, // 分享描述
-              link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: imgUrl, // 分享图标
-              success: function () {
-                mobile.toast('分享成功')
-                _this.shareSuccess()
-                _this.showShare = false
-                _this.$router.go(-1)
-              },
-              cancel: function () {
-                mobile.toast('取消分享')
-              }
-            });
-            wx.onMenuShareQZone({
-              title: title, // 分享标题
-              desc: shareContent, // 分享描述
-              link: url, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-              imgUrl: imgUrl, // 分享图标
-              success: function () {
-                mobile.toast('分享成功')
-                _this.shareSuccess()
-                _this.showShare = false
-                _this.$router.go(-1)
-              },
-              cancel: function () {
-                mobile.toast('取消分享')
-              }
-            });
-          });
-          this.loading = false
-        })
-        // this.timeOut = setTimeout(() => {
-        //   mobile.wxshare(wx, shareCont);
-        // }, 1000)
-
       },
       monthTime (endTime, startTime) {
         return mobile.toMonth(endTime, startTime)

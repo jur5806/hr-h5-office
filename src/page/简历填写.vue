@@ -29,7 +29,7 @@
               </div>
             </div>
             <div class="g-basic-input">
-              <input class="basic-input" v-model.trim="basic.telephone" placeholder="请输入手机号" maxlength="11" @blur="checkPhone;bridges.scrollToTop()"/>
+              <input class="basic-input" v-model.trim="basic.recommendedTelephone" placeholder="请输入手机号" maxlength="11" @blur="checkPhone;bridges.scrollToTop()"/>
             </div>
           </div>
           <div class="g-basic-item">
@@ -38,7 +38,7 @@
                 <img src="../../static/img/reg-003.png" alt="">
               </div>
               <div class="g-basic-title">
-                身份证号
+                身份证号<span class="g-font-danger">*</span>
               </div>
             </div>
             <div class="g-basic-input">
@@ -84,7 +84,18 @@
               <h3 class="title">{{item.title}}</h3>
             </li>
           </ul> -->
-          <van-calendar v-model="showTimeSelect" @confirm="onConfirmselectTime" />
+          <van-popup v-model="showTimeSelect" position="bottom" :style="{ height: '50%' }">
+              <van-datetime-picker
+              v-model="currentDate"
+              type="date"
+              title="选择年月日"
+              @confirm="onConfirmselectTime"
+              :min-date="minDate"
+              :max-date="maxDate"
+            />
+          </van-popup>
+          
+          <!-- <van-calendar v-model="showTimeSelect" @confirm="onConfirmselectTime" :min-date="new Date('1970/01/01')" :max-date="new Date()"/> -->
            <!-- <van-calendar v-model="showTimeSelect" color="#1989fa" type="range" :show-confirm="false"  @confirm="onConfirmselectTime" allow-same-day/> -->
           <div class="basic-info" style="border:none">
             <div class="g-basic-item" @click="showTimeSelect = true">
@@ -197,7 +208,7 @@
                 <i class="iconfont icon-jinru-copy icon"></i>
               </div>
             </div>
-            <div class="g-basic-item" @click="show2 = true">
+            <div class="g-basic-item">
               <div class="g-basic-label">
                 <div class="g-basic-icon g-basic-icon-mini">
                   <img src="../../static/img/reg-007.png" alt="">
@@ -378,7 +389,7 @@
           recommendedEducation: '',
           recommendedMarital:'',
           recommendedIdcard: '',
-          telephone: '',
+          recommendedTelephone: '',
           address:'',
           recommendedMajor:'',
           recommendedEmail:'',
@@ -391,9 +402,12 @@
           recommendedPhoto:'',
           hrId:'',
         },
+        minDate: new Date(1985, 0, 1),
+        maxDate: new Date(2025, 10, 1),
         faceInfo: {
           facePersonName: '',
         },
+        currentDate: '',
         visitorsNumberOption: [
           {label: '男', value: 0}, {label: '女', value: 1}
         ],
@@ -450,12 +464,16 @@
       },
       checkPhone() {
         var myReg = /^1[3|4|5|7|8][0-9]\d{4,8}$/
-        if (!myReg.test(val)) {
+        if (!myReg.test(this.basic.recommendedTelephone)) {
           mobile.toast('手机号格式错误')
+          return false
+        }else{
+          return true
         }
       },
       checkIdCard () {
-        return mobile.rule.idcard(this.basic.recommendedIdcard)
+        console.log(mobile.rule.recommendedIdcard(this.basic.recommendedIdcard))
+        return mobile.rule.recommendedIdcard(this.basic.recommendedIdcard)
       },
       visitorsCheck(row, index) {
         this.basic.sex = row.value;
@@ -498,6 +516,7 @@
           return
         }
         this.isSubmit = true
+        
         if (!this.basic.recommendedName) {
           this.isSubmit = false
           mobile.toast('请输入姓名');
@@ -507,12 +526,15 @@
           this.isSubmit = false
           return
         }
-        if (this.basic.idCard) {
+        if (!this.basic.recommendedIdcard) {
           this.isSubmit = false
-          if (!this.checkIdCard()) {
+          mobile.toast('请输入身份证号');
+          return
+        }
+        if (!this.checkIdCard()) {
+          this.isSubmit = false
             return
           }
-        }
         if (!this.basic.recommendedEducation) {
           this.isSubmit = false
           mobile.toast('请选择学历');
@@ -535,7 +557,7 @@
         visitorReviewPersonId = this.$store.state.visitorReviewPersonInfo.userId?this.$store.state.visitorReviewPersonInfo.userId:""
         visitorReviewPersonName = this.$store.state.visitorReviewPersonInfo.userName?this.$store.state.visitorReviewPersonInfo.userName:""
         let id = Number(this.$route.query.visitorReviewId)
-        getData.submitVisitorReview(id,this.basic.name, this.basic.phone, this.$store.state.visitorCompanyInfo.companyId, this.basic.idCard, this.basic.content, this.$store.state.startTime, this.$store.state.endTime, this.userId, this.basic.visitPurpose, this.basic.visitorsNum, this.basic.photoId, this.$store.state.visitorCompanyInfo.companyIsPark, this.carNumber, visitorReviewPersonId, visitorReviewPersonName,this.visitorReviewFileUrl.join(',')).then(res => {
+        getData.submitVisitorReview(id,this.basic.name, this.basic.phone, this.$store.state.visitorCompanyInfo.companyId, this.basic.recommendedIdcard, this.basic.content, this.$store.state.startTime, this.$store.state.endTime, this.userId, this.basic.visitPurpose, this.basic.visitorsNum, this.basic.photoId, this.$store.state.visitorCompanyInfo.companyIsPark, this.carNumber, visitorReviewPersonId, visitorReviewPersonName,this.visitorReviewFileUrl.join(',')).then(res => {
           if (res.data.code === 1) {
             this.isSubmit = false
             // mobile.toast('添加成功');
@@ -554,7 +576,7 @@
         visitorReviewPersonId = this.$store.state.visitorReviewPersonInfo.userId?this.$store.state.visitorReviewPersonInfo.userId:""
         visitorReviewPersonName = this.$store.state.visitorReviewPersonInfo.userName?this.$store.state.visitorReviewPersonInfo.userName:""
 
-        getData.newAddVisitorReview(this.basic.name, this.basic.phone, this.$store.state.visitorCompanyInfo.companyId, this.basic.idCard, this.basic.content, this.$store.state.startTime,this.$store.state.endTime, this.userId, this.basic.visitPurpose, this.basic.visitorsNum, this.basic.photoId, this.$store.state.visitorCompanyInfo.companyIsPark, this.carNumber, visitorReviewPersonId, visitorReviewPersonName,this.visitorReviewFileUrl.join(',')).then(res => {
+        getData.newAddVisitorReview(this.basic.name, this.basic.phone, this.$store.state.visitorCompanyInfo.companyId, this.basic.recommendedIdcard, this.basic.content, this.$store.state.startTime,this.$store.state.endTime, this.userId, this.basic.visitPurpose, this.basic.visitorsNum, this.basic.photoId, this.$store.state.visitorCompanyInfo.companyIsPark, this.carNumber, visitorReviewPersonId, visitorReviewPersonName,this.visitorReviewFileUrl.join(',')).then(res => {
           if (res.data.code === 1) {
             this.isSubmit = false
             // mobile.toast('添加成功');

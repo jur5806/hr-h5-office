@@ -1,6 +1,6 @@
 <template>
   <div class="photo">
-    <input ref="photo" class="upload-input" type="file" accept="image/*" capture="user" @change="checkOss">
+    <input ref="photo" class="upload-input" type="file" accept="image/*" :capture="false" @change="checkOss">
   </div>
 </template>
 <script>

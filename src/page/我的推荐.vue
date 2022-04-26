@@ -15,6 +15,7 @@
             <p style="color: #ff9b0c;" v-if="item.approvalState == 1">HR初审</p>
             <p style="color: #2C7AEE;" v-if="item.approvalState == 2">面试通过</p>
             <p style="color: #15C875;" v-if="item.approvalState == 3">成功入职</p>
+            <p style="color: #15C875;" v-if="item.approvalState == 99">成功入职</p>
           </div>
           <div class="g-visit-info flex-box">
             <div class="g-visit-info-img" v-if="item.visitorIsReceive === 0">

@@ -31,7 +31,8 @@
             </div>
           </div>
           <div class="g-basic-input flex-box" style="justify-content: flex-end">
-            <p class="p1">{{form.birthDate.replace('-','/') | date}}</p>
+            <p v-if="form.birthDate">{{form.birthDate.replace('-','/')| date}}</p>
+            <p class="p1" v-else></p>
             <i class="iconfont icon-jinru-copy icon"></i>
           </div>
         </div>
