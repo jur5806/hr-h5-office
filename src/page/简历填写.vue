@@ -404,12 +404,9 @@
         },
         minDate: new Date(1985, 0, 1),
         maxDate: new Date(2025, 10, 1),
-        faceInfo: {
-          facePersonName: '',
-        },
         currentDate: '',
         visitorsNumberOption: [
-          {label: '男', value: 0}, {label: '女', value: 1}
+          {label: '男', value: 1}, {label: '女', value: 0}
         ],
         recommendedEducationList: [
           {label: '九年教育', value: 1},
@@ -428,9 +425,6 @@
         carNumber:"",
         showExample:false,
         showTimeSelect: false,
-        timeType: 1 ,//1:固定来访时间；2:自定义来访时间
-        // endMax: new Date().add('d', 6),
-        visitorReviewFileUrl: []
       }
     },
     mounted() {

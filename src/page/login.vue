@@ -90,7 +90,7 @@
       }
         getData.checkLogin(data).then(res => {
           if (res.data.code === 200) {
-            mobile.toast('登录成功')
+            // mobile.toast('登录成功')
             
             this.$store.state.userName = res.data.data.name;
             mobile.setStore('userName', res.data.data.name);

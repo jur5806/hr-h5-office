@@ -34,8 +34,18 @@
           <div class="g-info-tit">招聘需求：</div>
           <div class="g-abstract-cont">
             <div class="g-contract-point">
+              <p v-for="(item,index) in content1" :key="index">
+                {{item}}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="g-contract-bot g-info-item">
+          <div class="g-info-tit">薪资福利：</div>
+          <div class="g-abstract-cont">
+            <div class="g-contract-point">
               <p>
-                {{info.rcDescribe}}
+                {{info.rcSalaryWelfare}}
               </p>
             </div>
           </div>
@@ -121,6 +131,7 @@
         info:{},
         hrId:'',
         userId: '',
+        content1: [],
       }
     },
     activated () {
@@ -144,6 +155,9 @@
         getData.getRecruitIdDetail(this.$route.query.checkType).then(res => {
           if (res.data.code == 200) {
             this.info = res.data.data;
+            this.content1 = this.info.rcDescribe.split("\n");
+            console.log(this.content1);
+            
           } else {
             mobile.toast(res.data.message)
           }
@@ -330,12 +344,12 @@
   }
 
   .g-contract-point{
-    display: flex;
-    &::before{
-      content: "· ";
-      display: inline-block;
-      margin-right: 0.1rem;
-    }
+    // display: flex;
+    // &::before{
+    //   content: "· ";
+    //   display: inline-block;
+    //   margin-right: 0.1rem;
+    // }
   }
 </style>
 

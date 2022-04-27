@@ -167,6 +167,7 @@
         getData.userDetail(mobile.getStore('userId')).then(res => {
           if (res.data.code === 200) {
             this.user = res.data.data
+          }else{
             mobile.toast(res.data.message)
           }
         })
