@@ -108,7 +108,7 @@
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <p v-if="basic.recommendedBirth" class="p1">{{new Date(basic.recommendedBirth.replace('-','/')).format('yyyy-MM-dd')}}</p>
+                <p v-if="basic.recommendedBirth" class="p1">{{basic.recommendedBirth.replace("-",'/') | date}}</p>
                 <span v-else class="tip-info">请选择出生日期</span>
                 <!-- <i class="iconfont icon-jinru-copy icon"></i> -->
               </div>
@@ -162,7 +162,7 @@
                 </div>
               </div>
               <div class="g-basic-input flex-box" style="justify-content: flex-end">
-                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.address" placeholder="请输入家庭地址" maxlength="20" />
+                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.recommendedAddress" placeholder="请输入家庭地址" maxlength="20" />
               </div>
             </div>
             <div class="g-basic-item">
@@ -206,6 +206,34 @@
                 <p class="p1" v-if="basic.recommendedMarital">{{basic.recommendedMarital}}</p>
                 <p v-else style="color: gainsboro;font-size:.3rem">请选择婚姻状况</p>
                 <i class="iconfont icon-jinru-copy icon"></i>
+              </div>
+            </div>
+            <div class="g-basic-item" @click="show4 = true">
+              <div class="g-basic-label">
+                <div class="g-basic-icon g-basic-icon-mini">
+                  <img src="../../static/img/reg-007.png" alt="">
+                </div>
+                <div class="g-basic-title g-basic-title-mini">
+                  <p>就读状况<span class="g-font-danger">*</span></p>
+                </div>
+              </div>
+              <div class="g-basic-input flex-box" style="justify-content: flex-end">
+                <p class="p1" v-if="basic.recommendedAttend">{{basic.recommendedAttend}}</p>
+                <p v-else style="color: gainsboro;font-size:.3rem">请选择就读状况</p>
+                <i class="iconfont icon-jinru-copy icon"></i>
+              </div>
+            </div>
+            <div class="g-basic-item" v-if="basic.recommendedAttend == '已毕业'">
+              <div class="g-basic-label">
+                <div class="g-basic-icon g-basic-icon-mini">
+                  <img src="../../static/img/reg-007.png" alt="">
+                </div>
+                <div class="g-basic-title g-basic-title-mini">
+                  <p>毕业院校<span class="g-font-danger">*</span></p>
+                </div>
+              </div>
+              <div class="g-basic-input flex-box" style="justify-content: flex-end">
+                <input class="basic-input" @blur="bridges.scrollToTop()" v-model.trim="basic.recommendedSchool" placeholder="请输入毕业院校" maxlength="20" />
               </div>
             </div>
             <div class="g-basic-item">
@@ -268,7 +296,7 @@
           <div class="visitor-textarea">
             <textarea v-model.trim="basic.recommendedSelfEvaluation"  @blur="bridges.scrollToTop()"></textarea>
           </div>
-          <h3 class="visitor-content flex-box">
+          <!-- <h3 class="visitor-content flex-box">
             <div class="g-basic-content">
               <img src="../../static/img/reg-011.png" alt="">
             </div>
@@ -276,7 +304,7 @@
           </h3>
           <div class="visitor-img">
             <v-upload-file :number="1" :size="1" :img="true" @onFileChange="onImgChange"></v-upload-file>
-          </div>
+          </div> -->
         </div>
       </div>
     </v-scroll>
@@ -311,8 +339,17 @@
     <yd-popup class="g-confirm g-zhaji-confirm2" v-model="show3" position="center" width="6.3rem"
               :close-on-masker="true">
       <div class="g-choose-confirm">
-        <div class="g-choose-box" :class="{active:basic.recommendedMarital===item}"
+        <div class="g-choose-box" :class="{active:basic.recommendedAttend===item}"
              v-for="(item,index) in recommendedMaritalList" @click="setRecommendedMarital(item,index)">
+          {{item}}
+        </div>
+      </div>
+    </yd-popup>
+    <yd-popup class="g-confirm g-zhaji-confirm2" v-model="show4" position="center" width="6.3rem"
+              :close-on-masker="true">
+      <div class="g-choose-confirm">
+        <div class="g-choose-box" :class="{active:basic.recommendedAttend===item}"
+             v-for="(item,index) in recommendedAttendList" @click="setRecommendedAttend(item,index)">
           {{item}}
         </div>
       </div>
@@ -388,10 +425,12 @@
           recommendedPolitical: '',
           recommendedEducation: '',
           recommendedMarital:'',
+          recommendedAttend: '',
           recommendedIdcard: '',
           recommendedTelephone: '',
-          address:'',
+          recommendedAddress:'',
           recommendedMajor:'',
+          recommendedSchool: '',
           recommendedEmail:'',
           recommendedAttend:'',
           recommendedSelfEvaluation:'',
@@ -402,25 +441,27 @@
           recommendedPhoto:'',
           hrId:'',
         },
-        minDate: new Date(1985, 0, 1),
-        maxDate: new Date(2025, 10, 1),
+        minDate: new Date(1970, 0, 1),
+        maxDate: new Date(),
         currentDate: '',
         visitorsNumberOption: [
-          {label: '男', value: 1}, {label: '女', value: 0}
+          {label: '女', value: 0},{label: '男', value: 1}
         ],
         recommendedEducationList: [
           {label: '九年教育', value: 1},
           {label: '大专', value: 2},
           {label: '本科', value: 3},
           {label: '研究生', value: 4},
-          {label: '其他', value: 6},
+          {label: '其他', value: 5},
         ],
         recommendedPoliticalList:['群众','共青团员','党员'],
         recommendedMaritalList:['已婚','未婚','离异'],
+        recommendedAttendList:['在读中','已毕业'],
         show: false,
         show1: false,
         show2: false,
         show3: false,
+        show4: false,
         isSubmit: false,
         carNumber:"",
         showExample:false,
@@ -466,8 +507,7 @@
         }
       },
       checkIdCard () {
-        console.log(mobile.rule.recommendedIdcard(this.basic.recommendedIdcard))
-        return mobile.rule.recommendedIdcard(this.basic.recommendedIdcard)
+        return mobile.rule.idcard(this.basic.recommendedIdcard)
       },
       visitorsCheck(row, index) {
         this.basic.sex = row.value;
@@ -484,6 +524,10 @@
       setRecommendedMarital(row, index) {
         this.basic.recommendedMarital = row;
         this.show3 = false;
+      },
+      setRecommendedAttend(row, index) {
+        this.basic.recommendedAttend = row;
+        this.show4 = false;
       },
       lookPhoto () {
         if (this.$store.state.visitorPhoto) {
@@ -509,7 +553,7 @@
           mobile.toast('请勿重复提交');
           return
         }
-        this.isSubmit = true
+        
         
         if (!this.basic.recommendedName) {
           this.isSubmit = false
@@ -534,14 +578,18 @@
           mobile.toast('请选择学历');
           return
         }
+        this.isSubmit = true
          getData.resumetAdd(this.basic)
           .then(resp => {
             if (resp.data.code === 200) {
               this.isSubmit = false
               this.addSuccessShow = true
             } else {
+              this.isSubmit = false
             }
-          }).catch(failResponse => {})
+          }).catch(failResponse => {
+            this.isSubmit = false
+          })
 
       },
       addId(){

@@ -18,7 +18,7 @@
               <div class="flex-box g-enter-bottom">
                 <div class="flex-box">
                   <img class="img1" src="../assets/enterpriseImg/handle-time.png" alt="">
-                  <p class="p-times">{{new Date(item.rcStartTime).format('yyyy-MM-dd')}} 提交</p>
+                  <p class="p-times" v-if="item.rcStartTime">{{item.rcStartTime.replace("-",'/')|date}} 提交</p>
                 </div>
                 <!-- <p class="p-pingjia" v-if="!item.isComment && item.odStatus === 4" @click.stop="$router.push('/enterpriseServiceEvaluation?odId=' + item.odId)">评价</p> -->
               </div>
@@ -96,6 +96,11 @@
           }
           this.isData = 2
           this.list = res.data.data
+          this.list = this.list.filter(item =>{
+            let time=new Date(item.rcEndTime.replace(/-/g,'/')).getTime()
+            let timeSate = item.rcEndTime&&time<new Date().getTime()?false:true
+            return !!item.enabled&&timeSate
+          })
           if (this.list.length === 0) {
             this.isData = 3
           }

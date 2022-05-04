@@ -68,7 +68,6 @@
             </div>
           </div>
           <div class="g-mineitem"><div class="g-oneline"></div></div>
-          <div class="g-mineitem"><div class="g-oneline"></div></div>
           <div class="g-mineitem flex-box" @click="checkUser('myEnroll')"><!--$router.push('/myEnroll')-->
             <div class="flex-box g-mineleft">
               <i class="iconfont icon-baoming"></i>

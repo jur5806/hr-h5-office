@@ -84,7 +84,6 @@
         </div>
       </div>
     </v-scroll>
-    <van-calendar v-model="show1" @confirm="onConfirm" />
     <van-popup v-model="show1" position="bottom" :style="{ height: '50%' }">
       <van-datetime-picker
         v-model="currentDate"
@@ -156,6 +155,9 @@ export default {
       var myReg = /^1[3|4|5|7|8][0-9]\d{4,8}$/;
       if (!myReg.test(this.form.phone)) {
         mobile.toast("手机号格式错误");
+        return false
+      }else{
+        return true
       }
     },
     init() {
@@ -169,24 +171,29 @@ export default {
         .catch(() => {});
     },
     submit() {
+      
       if (!this.form.username) {
         mobile.toast("请填写你的用户名");
         return;
       }
+      console.log(55555)
       if (!this.form.phone) {
         mobile.toast("请填写你的手机号");
         return;
       }
+      console.log(55555)
       if (!this.checkPhone()) {
         return;
       }
+      console.log(55555)
       getData
         .userInfoEdit(this.form)
         .then((res) => {
           if (res.data.code === 200) {
             this.$router.go(-1);
-          } else {
             mobile.toast("修改成功");
+          } else {
+            mobile.toast("修改失败");
           }
         })
         .catch(() => {});

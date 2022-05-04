@@ -4,7 +4,7 @@
     </v-zhajiheader>
     <v-scroll class="scroll main-box4">
       <div class="g-visitlist" v-if="type === 2">
-        <div class="g-visitlist-item" v-for="(item, index) in visitorList" :key="index" :class="item.visitorState === 2 ? 'g-overdue' : ''" @click="$router.push('/visitorDetails?visitorId=' + item.visitorId + '&noPublic=2')">
+        <div class="g-visitlist-item" v-for="(item, index) in visitorList" :key="index" :class="item.visitorState === 2 ? 'g-overdue' : ''">
           <div class="flex-box g-item-top">
             <i :class="item.visitorIsReceive === 0 ? 'iconfont-visit iconfasong' : 'iconfont-visit iconjieshou'"></i>
 
